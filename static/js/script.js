@@ -1,6 +1,6 @@
 let isLoading = false;
 
-// Определяем группы стран
+
 const countryGroups = {
     europe: ['Germany', 'France', 'Italy', 'Spain', 'United Kingdom'],
     northamerica: ['United States', 'Canada'],
@@ -10,21 +10,21 @@ const countryGroups = {
 
 const colors = ['#6366f1', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5a2b', '#6b7280', '#ec4899', '#84cc16', '#f97316', '#0ea5e9'];
 
-// Функция для выбора группы стран
+
 function selectCountryGroup(groupName) {
     const select = document.getElementById('countries');
     const buttons = document.querySelectorAll('.country-btn');
-    // Сначала очищаем все выборы
+   
     for (let option of select.options) {
         option.selected = false;
     }
-    // Убираем активный класс со всех кнопок
+   
     buttons.forEach(btn => btn.classList.remove('active'));
     if (groupName === 'clear') {
         updateSelectVisual();
         return;
     }
-    // Выбираем страны группы
+   
     if (countryGroups[groupName]) {
         for (let option of select.options) {
             if (countryGroups[groupName].includes(option.value)) {
@@ -32,7 +32,7 @@ function selectCountryGroup(groupName) {
             }
         }
     }
-    // Добавляем активный класс к соответствующей кнопке
+   
     const activeButton = document.querySelector(`[data-group="${groupName}"]`);
     if (activeButton) {
         activeButton.classList.add('active');
@@ -40,11 +40,11 @@ function selectCountryGroup(groupName) {
     updateSelectVisual();
 }
 
-// Функция для обновления визуального отображения селекта
+
 function updateSelectVisual() {
     const select = document.getElementById('countries');
     const selectedValues = Array.from(select.selectedOptions).map(o => o.value);
-    // Обновляем стили опций
+   
     for (let option of select.options) {
         if (option.selected) {
             option.style.backgroundColor = '#6366f1';
@@ -54,10 +54,10 @@ function updateSelectVisual() {
             option.style.color = '';
         }
     }
-    // Обновляем стили кнопок на основе выбранных стран
+   
     const buttons = document.querySelectorAll('.country-btn');
     buttons.forEach(btn => btn.classList.remove('active'));
-    // Проверяем какие группы полностью выбраны
+    
     Object.keys(countryGroups).forEach(groupName => {
         const groupCountries = countryGroups[groupName];
         const isGroupFullySelected = groupCountries.every(country => selectedValues.includes(country));
@@ -70,7 +70,7 @@ function updateSelectVisual() {
     });
 }
 
-// Update year display
+
 document.getElementById('year').addEventListener('input', function() {
     const yearDisplay = document.getElementById('year-value');
     const y = this.value;
@@ -83,7 +83,7 @@ document.getElementById('year').addEventListener('input', function() {
     }, 200);
 });
 
-// Обновляем визуал при изменении селекта
+
 document.getElementById('countries').addEventListener('change', function() {
     updateSelectVisual();
 });
@@ -150,7 +150,7 @@ async function updateCharts() {
         chartIds.forEach(id => {
              document.getElementById(id).innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 400px;"><div class="loading"></div></div>';
         });
-        // --- Загружаем данные по дневным смертям ---
+       
         const dailyData = [];
         const dailyPromises = countries.map((country, i) => 
             fetchWithErrorHandling(`/covid/daily_deaths?country=${encodeURIComponent(country)}&year=${year}`)
@@ -225,7 +225,7 @@ async function updateCharts() {
                 </div>
             `;
         }
-        // --- Загружаем Analytics данные ---
+       
         try {
             const analyticsUrl = `/analytics/mortality-vs-gdp?year=${year}&countries=${encodeURIComponent(countries.join(','))}`;
             const analyticsData = await fetchWithErrorHandling(analyticsUrl);
@@ -282,7 +282,7 @@ async function updateCharts() {
                 document.getElementById('analytics').innerHTML = '';
                 await new Promise(resolve => setTimeout(resolve, 100));
                 Plotly.newPlot('analytics', [analyticsTrace], analyticsLayout, config);
-                // ---------- Infection Rate (per 100k) ----------
+               
                 try {
                     const popByCountry = {};
                     sample.forEach(r => {
@@ -351,7 +351,7 @@ async function updateCharts() {
                             </div>
                         </div>`;
                 }
-                // ---------- Demographic Breakdown (by GDP buckets) ----------
+                
                 try {
                     const rows = sample.filter(r => r.deaths_per_100k != null && !isNaN(r.deaths_per_100k) && r.gdp_per_capita != null && !isNaN(r.gdp_per_capita));
                     if (rows.length === 0) throw new Error("No valid data for GDP breakdown.");
@@ -439,7 +439,7 @@ async function updateCharts() {
                     </div>
                 </div>`;
         }
-        // --- Обновляем таблицу сводки ---
+    
         const summaryPromises = countries.map(country => 
             fetchWithErrorHandling(`/covid/summary?country=${encodeURIComponent(country)}&date_from=${startDate}&date_to=${endDate}&case_type=${caseType}`)
                 .catch(() => null)
@@ -627,34 +627,34 @@ function getTimeAgo(date) {
     return `${Math.floor(seconds / 86400)}d ago`;
 }
 
-// --- НОВОЕ: Функция для прогнозирования ---
+
 async function predictInfections() {
-    // Получаем выбранную страну
+   
     const selectedOptions = document.getElementById('countries').selectedOptions;
     let countries = Array.from(selectedOptions).map(o => o.value);
-    let country = countries[0]; // Берем первую выбранную страну
+    let country = countries[0]; 
 
     if (!country) {
         alert("Please select at least one country first.");
         return;
     }
 
-    const daysAhead = 7; // Количество дней для прогноза
-    const button = document.getElementById('predict-btn'); // Кнопка
+    const daysAhead = 7; 
+    const button = document.getElementById('predict-btn'); 
     const originalText = button.innerHTML;
-    const originalWidth = button.style.width; // Сохраняем ширину для плавности
+    const originalWidth = button.style.width; 
 
-    // Блоки для вывода результата
-    const card = document.getElementById('prediction-card'); // Новый скрытый блок
-    const outputDiv = document.getElementById('prediction-output'); // Внутри него
+    
+    const card = document.getElementById('prediction-card'); 
+    const outputDiv = document.getElementById('prediction-output'); 
 
-    // Меняем кнопку на "Loading..."
+    
     button.innerHTML = '<div class="loading"></div> Predicting...';
     button.disabled = true;
-    button.style.width = originalWidth; // Фиксируем ширину
+    button.style.width = originalWidth; 
 
     try {
-        // Вызываем API
+        
         const response = await fetch(`/analytics/predict-infections?country=${encodeURIComponent(country)}&days_ahead=${daysAhead}`);
         
         if (!response.ok) {
@@ -664,7 +664,7 @@ async function predictInfections() {
         
         const data = await response.json();
 
-        // --- Формируем HTML для отображения ---
+       
         let html = `<h3 style="text-align:center; margin-bottom: 1rem;"><i class="fas fa-chart-line"></i> Infection Forecast for ${data.country}</h3>`;
         html += `<p style="text-align:center; color: var(--text-muted); margin-bottom: 1.5rem;">Model: ${data.model} | Last Observed: ${data.last_observed_date} (${data.last_observed_value.toLocaleString()} total cases)</p>`;
         html += `<div style="overflow-x: auto;"><table class="table">`;
@@ -680,18 +680,18 @@ async function predictInfections() {
 
         html += `</tbody></table></div>`;
 
-        // Выводим результат в новый блок
+       
         outputDiv.innerHTML = html;
 
-        // Делаем блок видимым
+        
         card.style.display = 'block';
 
-        // Прокручиваем страницу к блоку прогноза
+       
         card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     } catch (error) {
         console.error("Error predicting infections:", error);
-        // Показываем ошибку в блоке вывода
+       
         outputDiv.innerHTML = `
             <div style="display: flex; align-items: center; justify-content: center; height: 100%; flex-direction: column; color: var(--error);">
                 <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
@@ -700,15 +700,15 @@ async function predictInfections() {
                 <p style="font-size: 0.9rem; margin-top: 1rem;">Please try again or check the server logs.</p>
             </div>
         `;
-        card.style.display = 'block'; // Показываем блок даже при ошибке
+        card.style.display = 'block'; 
     } finally {
-        // Возвращаем кнопку в исходное состояние
+        
         button.innerHTML = originalText;
         button.disabled = false;
     }
 }
 
-// Горячие клавиши
+
 document.addEventListener('keydown', function(e) {
     if (e.ctrlKey || e.metaKey) {
         switch(e.key) {
@@ -726,7 +726,7 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Инициализация приложения
+
 async function initialize() {
      document.querySelectorAll('.country-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -736,7 +736,7 @@ async function initialize() {
     });
     document.getElementById('update-btn').addEventListener('click', updateCharts);
     document.getElementById('add-annotation-btn').addEventListener('click', addAnnotation);
-    // --- Назначаем обработчик для кнопки прогноза ---
+    
     document.getElementById('predict-btn').addEventListener('click', predictInfections);
     setTimeout(checkHealth, 100);
     setTimeout(loadAnnotations, 300);
