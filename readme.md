@@ -78,18 +78,14 @@ Your Snowflake database should contain these tables:
    
    **Important**: If your Snowflake shared databases have names like `SVPABRO_EN59780_MY_SHARE`, you need to either:
    
-   **Option A**: Rename databases in Snowflake (Recommended)
+   **Option **: Rename databases in Snowflake (Recommended)
    ```sql
    -- In Snowflake, rename your databases to match the expected names:
    ALTER DATABASE SVPABRO_EN59780_MY_SHARE RENAME TO ANALYTICS_DB;
    ALTER DATABASE SVPABRO_EN59780_MY_SHARE2 RENAME TO WORK_DB;
    ```
    
-   **Option B**: Update your `.env` file to use actual database names
-   ```env
-   SNOWFLAKE_DATABASE=SVPABRO_EN59780_MY_SHARE2
-   # Use MY_SHARE2 because it typically contains the WORK_DB tables
-   ```
+ 
 
 ## Configuration
 
@@ -276,9 +272,9 @@ This project is licensed under the [MIT License](LICENSE) - see the LICENSE file
 
 ## Contact
 
-Your Name - your.email@example.com
+Your Name - buryanov.alexey@gmail.com
 
-Project Link: [https://github.com/yourusername/your-repo-name](https://github.com/yourusername/your-repo-name)
+Project Link: https://github.com/S1rt3ge/covid-analytics-suite
 
 ## Acknowledgments
 
