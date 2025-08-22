@@ -32,11 +32,6 @@ Your Snowflake database should contain these tables:
 - `ECDC_GLOBAL` - European CDC data
 - `OWID_VACCINATIONS` - Vaccination data
 - `HUM_RESTRICTIONS_AIRLINE` - Travel restrictions
-- `OPTIMIZED_RKI_GER_COVID19_DASHBOARD` - German COVID-19 data
-- `OPTIMIZED_WHO_SITUATION_REPORTS` - WHO reports
-- `OPTIMIZED_ECDC_GLOBAL` - European CDC data
-- `OPTIMIZED_OWID_VACCINATIONS` - Vaccination data
-- `OPTIMIZED_HUM_RESTRICTIONS_AIRLINE` - Travel restrictions
 
 ## Installation
 
@@ -70,7 +65,7 @@ Your Snowflake database should contain these tables:
    cp .env.example .env
    ```
    
-   Edit the `.env` file and add your actual API keys and another info:
+   Edit the `.env` file and add your actual API keys:
    ```env
    # Example environment variables - replace with your actual keys
    API_KEY=your_api_key_here
@@ -78,12 +73,23 @@ Your Snowflake database should contain these tables:
    DATABASE_URL=your_database_url_here
    DEBUG=True
    ```
-5 Snowflake Database Names Configuration
-Important: If your Snowflake shared databases have names like SVPABRO_EN59780_MY_SHARE, you need to either:
-Option A: Rename databases in Snowflake (Recommended)
-sql-- In Snowflake, rename your databases to match the expected names:
-ALTER DATABASE SVPABRO_EN59780_MY_SHARE RENAME TO ANALYTICS_DB;
-ALTER DATABASE SVPABRO_EN59780_MY_SHARE2 RENAME TO WORK_DB;
+
+   ### 4.1 Snowflake Database Names Configuration
+   
+   **Important**: If your Snowflake shared databases have names like `SVPABRO_EN59780_MY_SHARE`, you need to either:
+   
+   **Option A**: Rename databases in Snowflake (Recommended)
+   ```sql
+   -- In Snowflake, rename your databases to match the expected names:
+   ALTER DATABASE SVPABRO_EN59780_MY_SHARE RENAME TO ANALYTICS_DB;
+   ALTER DATABASE SVPABRO_EN59780_MY_SHARE2 RENAME TO WORK_DB;
+   ```
+   
+   **Option B**: Update your `.env` file to use actual database names
+   ```env
+   SNOWFLAKE_DATABASE=SVPABRO_EN59780_MY_SHARE2
+   # Use MY_SHARE2 because it typically contains the WORK_DB tables
+   ```
 
 ## Configuration
 
@@ -270,9 +276,9 @@ This project is licensed under the [MIT License](LICENSE) - see the LICENSE file
 
 ## Contact
 
-My mail - buryanov.alexey@gmail.com
+Your Name - your.email@example.com
 
-Project Link: https://github.com/S1rt3ge/covid-analytics-suite/tree/main
+Project Link: [https://github.com/yourusername/your-repo-name](https://github.com/yourusername/your-repo-name)
 
 ## Acknowledgments
 
