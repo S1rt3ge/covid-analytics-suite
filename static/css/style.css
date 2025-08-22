@@ -572,7 +572,6 @@ body::before {
     }
 }
 
-/* --- НОВОЕ: Стили для блока прогноза --- */
 #prediction-card {
     display: none;
     width: 100%;
