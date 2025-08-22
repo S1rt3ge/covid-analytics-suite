@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+pydantic
+pandas
+numpy
+python-dotenv
+snowflake-connector-python
+pymongo
+dash
+dash-bootstrap-components
+plotly
+requests
+starlette
+statsmodels
+scikit-learn

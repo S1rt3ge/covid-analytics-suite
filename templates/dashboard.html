@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID Analytics Dashboard | Professional Analytics Suite</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="status-indicator" id="health-status">
+        <i class="fas fa-circle-notch fa-spin"></i> Checking...
+    </div>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1><i class="fas fa-chart-line icon"></i>COVID Analytics Suite</h1>
+                <p>Advanced data visualization and analytics platform powered by Snowflake & MongoDB</p>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <section class="control-panel glass">
+            <div class="control-grid">
+                <div class="control-group">
+                    <div class="country-selector">
+                        <label for="countries"><i class="fas fa-globe icon"></i>Select Countries</label>
+                        <div class="country-buttons">
+                            <button type="button" class="country-btn" data-group="europe">
+                                🇪🇺 Europe
+                            </button>
+                            <button type="button" class="country-btn" data-group="northamerica">
+                                🌎 North America
+                            </button>
+                            <button type="button" class="country-btn" data-group="asia">
+                                🌏 Asia
+                            </button>
+                            <button type="button" class="country-btn" data-group="all">
+                                🌍 All
+                            </button>
+                            <button type="button" class="country-btn" data-group="clear">
+                                ❌ Clear
+                            </button>
+                        </div>
+                        <select class="form-select" id="countries" multiple size="8">
+                            <option value="Germany">🇩🇪 Germany</option>
+                            <option value="France">🇫🇷 France</option>
+                            <option value="Italy">🇮🇹 Italy</option>
+                            <option value="Spain">🇪🇸 Spain</option>
+                            <option value="United Kingdom">🇬🇧 United Kingdom</option>
+                            <option value="United States">🇺🇸 United States</option>
+                            <option value="Canada">🇨🇦 Canada</option>
+                            <option value="Japan">🇯🇵 Japan</option>
+                            <option value="China">🇨🇳 China</option>
+                            <option value="India">🇮🇳 India</option>
+                            <option value="Brazil">🇧🇷 Brazil</option>
+                            <option value="Australia">🇦🇺 Australia</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="year"><i class="fas fa-calendar icon"></i>Analysis Year</label>
+                    <div class="range-container">
+                        <input type="range" class="form-range" id="year" min="2020" max="2023" value="2021">
+                        <div class="year-display" id="year-value">2021</div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label><i class="fas fa-calendar-range icon"></i>Date Range & Type</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <input type="date" class="form-control" id="start-date" value="2021-01-01">
+                        <input type="date" class="form-control" id="end-date" value="2021-03-31">
+                    </div>
+                    <select class="form-select" id="case-type">
+                        <option value="deaths" selected>💀 Deaths</option>
+                        <option value="confirmed">🦠 Confirmed Cases</option>
+                        <option value="cases">📊 All Cases</option>
+                        <option value="recovered">💚 Recovered</option>
+                    </select>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button class="btn-primary" id="update-btn">
+                    <i class="fas fa-sync-alt"></i> Update Analytics
+                </button>
+                <button class="btn-primary" id="predict-btn">
+                    <i class="fas fa-chart-line"></i> Predict Infections
+                </button>
+            </div>
+        </section>
+        <div class="charts-grid">
+            <div class="chart-card glass">
+                <div class="chart-title">
+                    <i class="fas fa-chart-area icon"></i>Daily Death Trends
+                </div>
+                <div id="daily-deaths" style="height: 400px;">
+                    <div style="display: flex; align-items: center; justify-content: center; height: 400px; color: var(--text-muted);">
+                        <i class="fas fa-chart-area" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                        <div style="margin-left: 1rem;">
+                            <h4>Ready for Analysis</h4>
+                            <p>Click "Update Analytics" to load data</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-card glass">
+                <div class="chart-title">
+                    <i class="fas fa-chart-bar icon"></i>Mortality Analytics
+                </div>
+                <div id="analytics" style="height: 400px;">
+                    <div style="display: flex; align-items: center; justify-content: center; height: 400px; color: var(--text-muted);">
+                        <i class="fas fa-chart-bar" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                        <div style="margin-left: 1rem;">
+                            <h4>Analytics Ready</h4>
+                            <p>Click "Update Analytics" to load mortality data</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Infection Rate (per 100k) -->
+            <div class="chart-card glass">
+              <div class="chart-title">
+                <i class="fas fa-virus icon"></i>Infection Rate (per 100k)
+              </div>
+              <div id="infection-rate" style="height: 400px;">
+                <div style="display:flex;align-items:center;justify-content:center;height:400px;color:var(--text-muted);">
+                  <i class="fas fa-virus" style="font-size:3rem;margin-bottom:1rem;opacity:0.3;"></i>
+                  <div style="margin-left:1rem;">
+                    <h4>Ready for Analysis</h4>
+                    <p>Click "Update Analytics" to load infection rate</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Demographic Breakdown -->
+            <div class="chart-card glass">
+              <div class="chart-title">
+                <i class="fas fa-users icon"></i>Demographic Breakdown (by GDP Group)
+              </div>
+              <div id="demography" style="height: 400px;">
+                <div style="display:flex;align-items:center;justify-content:center;height:400px;color:var(--text-muted);">
+                  <i class="fas fa-users" style="font-size:3rem;margin-bottom:1rem;opacity:0.3;"></i>
+                  <div style="margin-left:1rem;">
+                    <h4>Ready for Analysis</h4>
+                    <p>Click "Update Analytics" to load demographic breakdown</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+             <!-- НОВОЕ: Блок для прогноза (изначально скрыт) -->
+             <div class="chart-card glass" id="prediction-card">
+               <div class="chart-title">
+                 <i class="fas fa-chart-line icon"></i> Infection Forecast
+               </div>
+               <div id="prediction-output">
+                 <div class="prediction-placeholder">
+                   <i class="fas fa-chart-line prediction-icon"></i>
+                   <div class="prediction-text">
+                     <h4>Ready for Forecast</h4>
+                     <p>Select a country and click "Predict Infections".</p>
+                   </div>
+                 </div>
+               </div>
+             </div>
+        </div>
+        <section class="table-card glass">
+            <h3 class="section-title">
+                <i class="fas fa-table icon"></i>Data Summary
+            </h3>
+            <div id="summary-table">
+                <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                    <i class="fas fa-chart-pie" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                    <p>Select countries and configure parameters above, then click "Update Analytics" to see detailed data.</p>
+                </div>
+            </div>
+        </section>
+        <section class="annotations-section glass">
+            <h3 class="section-title">
+                <i class="fas fa-comments icon"></i>Team Notes & Insights
+            </h3>
+            <div class="annotation-form">
+                <input type="text" class="form-control" id="author" placeholder="Your name">
+                <input type="text" class="form-control" id="comment" placeholder="Share your insights...">
+                <button class="btn-primary" id="add-annotation-btn" style="padding: 0.75rem 1.5rem;">
+                    <i class="fas fa-plus"></i> Add Note
+                </button>
+            </div>
+            <div id="annotations-list">
+                <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                    <i class="fas fa-sticky-note" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                    <p>No annotations yet. Be the first to share an insight!</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
