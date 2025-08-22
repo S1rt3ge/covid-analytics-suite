@@ -32,6 +32,11 @@ Your Snowflake database should contain these tables:
 - `ECDC_GLOBAL` - European CDC data
 - `OWID_VACCINATIONS` - Vaccination data
 - `HUM_RESTRICTIONS_AIRLINE` - Travel restrictions
+- `OPTIMIZED_RKI_GER_COVID19_DASHBOARD` - German COVID-19 data
+- `OPTIMIZED_WHO_SITUATION_REPORTS` - WHO reports
+- `OPTIMIZED_ECDC_GLOBAL` - European CDC data
+- `OPTIMIZED_OWID_VACCINATIONS` - Vaccination data
+- `OPTIMIZED_HUM_RESTRICTIONS_AIRLINE` - Travel restrictions
 
 ## Installation
 
@@ -65,7 +70,7 @@ Your Snowflake database should contain these tables:
    cp .env.example .env
    ```
    
-   Edit the `.env` file and add your actual API keys:
+   Edit the `.env` file and add your actual API keys and another info:
    ```env
    # Example environment variables - replace with your actual keys
    API_KEY=your_api_key_here
@@ -259,9 +264,9 @@ This project is licensed under the [MIT License](LICENSE) - see the LICENSE file
 
 ## Contact
 
-Your Name - your.email@example.com
+My mail - buryanov.alexey@gmail.com
 
-Project Link: [https://github.com/yourusername/your-repo-name](https://github.com/yourusername/your-repo-name)
+Project Link: https://github.com/S1rt3ge/covid-analytics-suite/tree/main
 
 ## Acknowledgments
 
